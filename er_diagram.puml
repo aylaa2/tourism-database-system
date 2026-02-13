@@ -1,0 +1,188 @@
+@startuml ER_Diagram_Turism_Siria
+
+' Entity Relationship Diagram for Tourism Syria Database
+' 11 Tables with relationships
+
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam entityStyle rectangle
+
+' === ENTITIES ===
+
+entity Regiuni {
+  * id_regiune : NUMBER(5) <<PK>>
+  --
+  nume_regiune : VARCHAR2(100)
+  descriere : VARCHAR2(500)
+  populatie : NUMBER(10)
+  suprafata_km2 : NUMBER(10,2)
+  capitala : VARCHAR2(100)
+  data_adaugare : DATE
+}
+
+entity Categorii {
+  * id_categorie : NUMBER(5) <<PK>>
+  --
+  nume_categorie : VARCHAR2(100)
+  descriere : VARCHAR2(500)
+  icon_path : VARCHAR2(255)
+}
+
+entity Locatii {
+  * id_locatie : NUMBER(5) <<PK>>
+  --
+  nume_locatie : VARCHAR2(200)
+  id_regiune : NUMBER(5) <<FK>>
+  id_categorie : NUMBER(5) <<FK>>
+  descriere : VARCHAR2(2000)
+  adresa : VARCHAR2(300)
+  latitudine : NUMBER(10,7)
+  longitudine : NUMBER(10,7)
+  pret_intrare : NUMBER(10,2)
+  program_lucru : VARCHAR2(100)
+  an_construire : NUMBER(5)
+  patrimoniu_unesco : CHAR(1)
+  stare_conservare : VARCHAR2(50)
+  data_adaugare : DATE
+  activ : CHAR(1)
+}
+
+entity Turisti {
+  * id_turist : NUMBER(5) <<PK>>
+  --
+  nume : VARCHAR2(100)
+  prenume : VARCHAR2(100)
+  email : VARCHAR2(150)
+  telefon : VARCHAR2(20)
+  tara_origine : VARCHAR2(100)
+  data_nastere : DATE
+  sex : CHAR(1)
+  limba_preferata : VARCHAR2(50)
+  data_inregistrare : DATE
+  nr_vizite_total : NUMBER(5)
+}
+
+entity Ghizi {
+  * id_ghid : NUMBER(5) <<PK>>
+  --
+  nume : VARCHAR2(100)
+  prenume : VARCHAR2(100)
+  email : VARCHAR2(150)
+  telefon : VARCHAR2(20)
+  limbi_vorbite : VARCHAR2(200)
+  experienta_ani : NUMBER(2)
+  rating_mediu : NUMBER(3,2)
+  pret_ora : NUMBER(10,2)
+  id_regiune : NUMBER(5) <<FK>>
+  specializare : VARCHAR2(200)
+  disponibil : CHAR(1)
+  data_angajare : DATE
+}
+
+entity Tururi {
+  * id_tur : NUMBER(5) <<PK>>
+  --
+  nume_tur : VARCHAR2(200)
+  descriere : VARCHAR2(1000)
+  id_ghid : NUMBER(5) <<FK>>
+  id_regiune : NUMBER(5) <<FK>>
+  durata_ore : NUMBER(4,1)
+  pret_persoana : NUMBER(10,2)
+  nr_max_participanti : NUMBER(3)
+  nivel_dificultate : VARCHAR2(20)
+  include_transport : CHAR(1)
+  include_masa : CHAR(1)
+  data_creare : DATE
+  activ : CHAR(1)
+}
+
+entity Rezervari {
+  * id_rezervare : NUMBER(10) <<PK>>
+  --
+  id_tur : NUMBER(5) <<FK>>
+  id_turist : NUMBER(5) <<FK>>
+  data_rezervare : DATE
+  data_tur : DATE
+  nr_persoane : NUMBER(3)
+  pret_total : NUMBER(10,2)
+  status_rezervare : VARCHAR2(20)
+  metoda_plata : VARCHAR2(50)
+  observatii : VARCHAR2(500)
+}
+
+entity Vizite {
+  * id_vizita : NUMBER(10) <<PK>>
+  --
+  id_turist : NUMBER(5) <<FK>>
+  id_locatie : NUMBER(5) <<FK>>
+  data_vizita : DATE
+  durata_minute : NUMBER(4)
+  cu_ghid : CHAR(1)
+  id_ghid : NUMBER(5) <<FK>>
+  pret_platit : NUMBER(10,2)
+}
+
+entity Evenimente {
+  * id_eveniment : NUMBER(5) <<PK>>
+  --
+  nume_eveniment : VARCHAR2(200)
+  descriere : VARCHAR2(1000)
+  id_locatie : NUMBER(5) <<FK>>
+  data_start : DATE
+  data_end : DATE
+  pret_bilet : NUMBER(10,2)
+  capacitate_max : NUMBER(5)
+  nr_participanti_actuali : NUMBER(5)
+  tip_eveniment : VARCHAR2(100)
+  organizator : VARCHAR2(200)
+  status_eveniment : VARCHAR2(20)
+}
+
+entity Participari {
+  * id_participare : NUMBER(10) <<PK>>
+  --
+  id_eveniment : NUMBER(5) <<FK>>
+  id_turist : NUMBER(5) <<FK>>
+  data_inscriere : DATE
+  nr_bilete : NUMBER(3)
+  pret_total : NUMBER(10,2)
+  status_participare : VARCHAR2(20)
+}
+
+entity Recenzii {
+  * id_recenzie : NUMBER(10) <<PK>>
+  --
+  id_turist : NUMBER(5) <<FK>>
+  id_locatie : NUMBER(5) <<FK>>
+  id_tur : NUMBER(5) <<FK>>
+  id_ghid : NUMBER(5) <<FK>>
+  rating : NUMBER(1)
+  titlu : VARCHAR2(200)
+  comentariu : VARCHAR2(2000)
+  data_recenzie : DATE
+  util : NUMBER(5)
+  verificat : CHAR(1)
+}
+
+' === RELATIONSHIPS ===
+
+Regiuni ||--o{ Locatii : "contains"
+Categorii ||--o{ Locatii : "categorizes"
+Regiuni ||--o{ Ghizi : "employs"
+Locatii ||--o{ Vizite : "receives"
+Turisti ||--o{ Vizite : "makes"
+Ghizi ||--o{ Vizite : "guides"
+Locatii ||--o{ Evenimente : "hosts"
+Evenimente ||--o{ Participari : "has"
+Turisti ||--o{ Participari : "registers"
+Regiuni ||--o{ Tururi : "offers"
+Ghizi ||--o{ Tururi : "leads"
+Tururi ||--o{ Rezervari : "has"
+Turisti ||--o{ Rezervari : "makes"
+Turisti ||--o{ Recenzii : "writes"
+Locatii ||--o{ Recenzii : "receives"
+Tururi ||--o{ Recenzii : "reviews"
+Ghizi ||--o{ Recenzii : "gets"
+
+@enduml
+

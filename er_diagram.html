@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Diagram - Turism Siria Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .legend {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .legend h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .legend ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .legend li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-symbol {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        .diagram-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+        .entity-group {
+            margin-bottom: 40px;
+        }
+        .entity-group h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .entity {
+            display: inline-block;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin: 10px;
+            vertical-align: top;
+            min-width: 200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .entity:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .entity-title {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px 6px 0 0;
+        }
+        .entity-attrs {
+            padding: 10px;
+            font-size: 12px;
+        }
+        .entity-attrs .attr {
+            padding: 3px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .entity-attrs .pk {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .entity-attrs .fk {
+            color: #3498db;
+        }
+        .relationships {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .relationships h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .rel-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .arrow {
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ Entity Relationship Diagram<br>Turism Siria Database</h1>
+        
+        <div class="legend">
+            <h2>📊 Legend</h2>
+            <ul>
+                <li><span class="legend-symbol" style="background: #667eea;"></span> Primary Key (PK)</li>
+                <li><span class="legend-symbol" style="background: #3498db;"></span> Foreign Key (FK)</li>
+                <li><span class="legend-symbol" style="background: #95a5a6;"></span> Regular Attribute</li>
+                <li><span class="legend-symbol" style="background: #27ae60;"></span> One-to-Many (1:N)</li>
+            </ul>
+        </div>
+
+        <div class="diagram-container">
+            <!-- Master Tables -->
+            <div class="entity-group">
+                <h3>📍 Master Tables (Reference Data)</h3>
+                
+                <div class="entity">
+                    <div class="entity-title">Regiuni</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_regiune (PK)</div>
+                        <div class="attr">○ nume_regiune</div>
+                        <div class="attr">○ descriere</div>
+                        <div class="attr">○ populatie</div>
+                        <div class="attr">○ suprafata_km2</div>
+                        <div class="attr">○ capitala</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Categorii</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_categorie (PK)</div>
+                        <div class="attr">○ nume_categorie</div>
+                        <div class="attr">○ descriere</div>
+                        <div class="attr">○ icon_path</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Tables -->
+            <div class="entity-group">
+                <h3>🏛️ Location Tables</h3>
+                
+                <div class="entity">
+                    <div class="entity-title">Locatii</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_locatie (PK)</div>
+                        <div class="attr fk">↝ id_regiune (FK)</div>
+                        <div class="attr fk">↝ id_categorie (FK)</div>
+                        <div class="attr">○ nume_locatie</div>
+                        <div class="attr">○ descriere</div>
+                        <div class="attr">○ adresa</div>
+                        <div class="attr">○ latitudine/longitudine</div>
+                        <div class="attr">○ pret_intrare</div>
+                        <div class="attr">○ an_construire</div>
+                        <div class="attr">○ patrimoniu_unesco</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Evenimente</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_eveniment (PK)</div>
+                        <div class="attr fk">↝ id_locatie (FK)</div>
+                        <div class="attr">○ nume_eveniment</div>
+                        <div class="attr">○ data_start/end</div>
+                        <div class="attr">○ pret_bilet</div>
+                        <div class="attr">○ capacitate_max</div>
+                        <div class="attr">○ tip_eveniment</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- People Tables -->
+            <div class="entity-group">
+                <h3>👥 People Tables</h3>
+                
+                <div class="entity">
+                    <div class="entity-title">Turisti</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_turist (PK)</div>
+                        <div class="attr">○ nume</div>
+                        <div class="attr">○ prenume</div>
+                        <div class="attr">○ email</div>
+                        <div class="attr">○ telefon</div>
+                        <div class="attr">○ tara_origine</div>
+                        <div class="attr">○ data_nastere</div>
+                        <div class="attr">○ limba_preferata</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Ghizi</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_ghid (PK)</div>
+                        <div class="attr fk">↝ id_regiune (FK)</div>
+                        <div class="attr">○ nume</div>
+                        <div class="attr">○ prenume</div>
+                        <div class="attr">○ limbi_vorbite</div>
+                        <div class="attr">○ experienta_ani</div>
+                        <div class="attr">○ rating_mediu</div>
+                        <div class="attr">○ pret_ora</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour Tables -->
+            <div class="entity-group">
+                <h3>🗺️ Tour Tables</h3>
+                
+                <div class="entity">
+                    <div class="entity-title">Tururi</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_tur (PK)</div>
+                        <div class="attr fk">↝ id_ghid (FK)</div>
+                        <div class="attr fk">↝ id_regiune (FK)</div>
+                        <div class="attr">○ nume_tur</div>
+                        <div class="attr">○ descriere</div>
+                        <div class="attr">○ durata_ore</div>
+                        <div class="attr">○ pret_persoana</div>
+                        <div class="attr">○ nr_max_participanti</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Rezervari</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_rezervare (PK)</div>
+                        <div class="attr fk">↝ id_tur (FK)</div>
+                        <div class="attr fk">↝ id_turist (FK)</div>
+                        <div class="attr">○ data_rezervare</div>
+                        <div class="attr">○ data_tur</div>
+                        <div class="attr">○ nr_persoane</div>
+                        <div class="attr">○ pret_total</div>
+                        <div class="attr">○ status_rezervare</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Tables -->
+            <div class="entity-group">
+                <h3>📝 Activity & Interaction Tables</h3>
+                
+                <div class="entity">
+                    <div class="entity-title">Vizite</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_vizita (PK)</div>
+                        <div class="attr fk">↝ id_turist (FK)</div>
+                        <div class="attr fk">↝ id_locatie (FK)</div>
+                        <div class="attr fk">↝ id_ghid (FK)</div>
+                        <div class="attr">○ data_vizita</div>
+                        <div class="attr">○ durata_minute</div>
+                        <div class="attr">○ pret_platit</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Participari</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_participare (PK)</div>
+                        <div class="attr fk">↝ id_eveniment (FK)</div>
+                        <div class="attr fk">↝ id_turist (FK)</div>
+                        <div class="attr">○ data_inscriere</div>
+                        <div class="attr">○ nr_bilete</div>
+                        <div class="attr">○ pret_total</div>
+                    </div>
+                </div>
+
+                <div class="entity">
+                    <div class="entity-title">Recenzii</div>
+                    <div class="entity-attrs">
+                        <div class="attr pk">● id_recenzie (PK)</div>
+                        <div class="attr fk">↝ id_turist (FK)</div>
+                        <div class="attr fk">↝ id_locatie (FK)</div>
+                        <div class="attr fk">↝ id_tur (FK)</div>
+                        <div class="attr fk">↝ id_ghid (FK)</div>
+                        <div class="attr">○ rating (1-5)</div>
+                        <div class="attr">○ titlu</div>
+                        <div class="attr">○ comentariu</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relationships -->
+            <div class="relationships">
+                <h3>🔗 Relationships Summary</h3>
+                <div class="rel-item"><span class="arrow">Regiuni</span> 1:N <span class="arrow">Locatii</span> - One region contains many locations</div>
+                <div class="rel-item"><span class="arrow">Categorii</span> 1:N <span class="arrow">Locatii</span> - One category categorizes many locations</div>
+                <div class="rel-item"><span class="arrow">Regiuni</span> 1:N <span class="arrow">Ghizi</span> - One region employs many guides</div>
+                <div class="rel-item"><span class="arrow">Locatii</span> 1:N <span class="arrow">Vizite</span> - One location receives many visits</div>
+                <div class="rel-item"><span class="arrow">Turisti</span> 1:N <span class="arrow">Vizite</span> - One tourist makes many visits</div>
+                <div class="rel-item"><span class="arrow">Ghizi</span> 1:N <span class="arrow">Vizite</span> - One guide leads many visits</div>
+                <div class="rel-item"><span class="arrow">Locatii</span> 1:N <span class="arrow">Evenimente</span> - One location hosts many events</div>
+                <div class="rel-item"><span class="arrow">Evenimente</span> 1:N <span class="arrow">Participari</span> - One event has many participations</div>
+                <div class="rel-item"><span class="arrow">Turisti</span> 1:N <span class="arrow">Participari</span> - One tourist registers to many events</div>
+                <div class="rel-item"><span class="arrow">Regiuni</span> 1:N <span class="arrow">Tururi</span> - One region offers many tours</div>
+                <div class="rel-item"><span class="arrow">Ghizi</span> 1:N <span class="arrow">Tururi</span> - One guide leads many tours</div>
+                <div class="rel-item"><span class="arrow">Tururi</span> 1:N <span class="arrow">Rezervari</span> - One tour has many reservations</div>
+                <div class="rel-item"><span class="arrow">Turisti</span> 1:N <span class="arrow">Rezervari</span> - One tourist makes many reservations</div>
+                <div class="rel-item"><span class="arrow">Turisti</span> 1:N <span class="arrow">Recenzii</span> - One tourist writes many reviews</div>
+                <div class="rel-item"><span class="arrow">Locatii</span> 1:N <span class="arrow">Recenzii</span> - One location receives many reviews</div>
+                <div class="rel-item"><span class="arrow">Tururi</span> 1:N <span class="arrow">Recenzii</span> - One tour receives many reviews</div>
+                <div class="rel-item"><span class="arrow">Ghizi</span> 1:N <span class="arrow">Recenzii</span> - One guide gets many reviews</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
